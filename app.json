@@ -1,5 +1,5 @@
 {
-  "name": "HarvestSlackReport: A Slack Timesheet Bot",
+  "name": "HarvestSlackReport",
   "description": "A bot that notifies Slack about time spent on projects.",
   "keywords": [
     "slack",
