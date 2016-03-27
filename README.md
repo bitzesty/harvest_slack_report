@@ -2,6 +2,8 @@
 
 Reporting on daily harvest activity.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 ## Installation
 
     $ gem install harvest_slack_report
