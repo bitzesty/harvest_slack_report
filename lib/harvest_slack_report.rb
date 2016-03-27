@@ -76,7 +76,7 @@ module HarvestSlackReport
   end
 
   def self.run
-    from_date = Time.now - 1.day
+    from_date = Time.now - 24.hours
     report = fetch_harvest_data(from_date)
 
     if ENV['SLACK_API_TOKEN'].present?
