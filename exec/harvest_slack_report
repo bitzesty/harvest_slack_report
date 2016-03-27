@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "harvest_slack_report"
+
+HarvestSlackReport.run
