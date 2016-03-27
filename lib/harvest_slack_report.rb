@@ -15,8 +15,12 @@ module HarvestSlackReport
                                    password: password
                                   )
 
-    # Active people except for kate who works part time
-    ignore_users = [1078381]
+    ignore_users = if ENV['IGNORE_USERS'].present?
+      ENV['IGNORE_USERS'].split(',').map{ |user_id| user_id.to_i }
+    else
+      []
+    end
+
     people = harvest.users.all.select { |u| u.is_active? && !ignore_users.include?(u.id) }
 
     # puts people.map{ |u| u.email }
