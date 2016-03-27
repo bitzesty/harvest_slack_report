@@ -1,0 +1,29 @@
+{
+  "name": "HarvestSlackReport: A Slack Timesheet Bot",
+  "description": "A bot that notifies Slack about timespent on projects.",
+  "keywords": [
+    "slack",
+    "harvest"
+  ],
+  "repository": "https://github.com/bitzesty/harvest_slack_report",
+  "env": {
+    "HARVEST_DOMAIN": {
+      "description": "Your Harvest subdomain"
+    },
+    "HARVEST_USERNAME": {
+      "description": "An admin Harvest account username/email"
+    },
+    "HARVEST_PASSWORD": {
+      "description": "The password for that account"
+    },
+    "IGNORE_USERS": {
+      "description": "List of user ids to ignore, e.g. 1234,5678"
+    },
+    "SLACK_API_TOKEN": {
+      "description": "Your Slack Bot API Token (https://my.slack.com/services/new/bot)"
+    },
+  },
+  "addons": [
+    "scheduler"
+  ]
+}
