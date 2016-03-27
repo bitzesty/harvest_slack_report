@@ -92,6 +92,7 @@ module HarvestSlackReport
                               as_user: true
                              )
     else
+      puts 'SLACK_API_TOKEN needs to be set'
       puts report.inspect
     end
   end
