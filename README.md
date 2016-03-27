@@ -22,7 +22,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The following environment variables must be set:
+
+ENV['HARVEST_DOMAIN']
+ENV['HARVEST_USERNAME']
+ENV['HARVEST_PASSWORD']
 
 ## Development
 
@@ -38,4 +42,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
