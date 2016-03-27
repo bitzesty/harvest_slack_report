@@ -40,7 +40,7 @@ module HarvestSlackReport
 
       name = "#{person.first_name} #{person.last_name}"
 
-      if entries.any?
+      if entries && entries.any?
         total_hours = entries.map { |x| x.hours }.sum.round(2)
 
         hours_by_project = entries.group_by { |x| x.project_id }.map do |project_id, es|
