@@ -10,10 +10,10 @@ Reporting on daily harvest activity.
 
 The following environment variables must be set:
 
-  HARVEST_DOMAIN=your subdomain
-  HARVEST_USERNAME=your email
-  HARVEST_PASSWORD=password
-  SLACK_API_TOKEN=slack bot token
+    HARVEST_DOMAIN=your subdomain
+    HARVEST_USERNAME=your email
+    HARVEST_PASSWORD=password
+    SLACK_API_TOKEN=slack bot token
 
 ## Development
 
