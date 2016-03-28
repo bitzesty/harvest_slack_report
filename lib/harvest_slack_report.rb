@@ -64,14 +64,25 @@ module HarvestSlackReport
           "#72D321"
         end
 
+        emoji = case total_hours
+        when 0..6
+          ""
+        when 6..7
+          ":simple_smile:"
+        when 7..8
+          ":+1:"
+        else
+          ":military_medal:"
+        end
+
         report << { fallback: "#{name} logged #{total_hours} hours",
-                    text: "<#{harvest_url}|#{name}> logged #{total_hours} hours",
+                    text: "<#{harvest_url}|#{name}> logged #{total_hours} hours #{emoji}",
                     fields: hours_by_project,
                     color: color_code
                   }
 
       else
-        report << { fallback: "#{name} logged no time", text: "<#{harvest_url}|#{name}> logged no time", color: "#4A4A4A" }
+        report << { fallback: "#{name} logged no time", text: "<#{harvest_url}|#{name}> logged no time :notsureif:", color: "#4A4A4A" }
       end
       puts "#{i+1}/#{n_people}"
     end
