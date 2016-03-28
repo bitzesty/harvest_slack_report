@@ -40,6 +40,8 @@ module HarvestSlackReport
 
       name = "#{person.first_name} #{person.last_name}"
 
+      harvest_url = "https://#{domain}.harvestapp.com/time/day/#{from_date.strftime("%Y/%m/%d")}/#{person.id}"
+
       if entries && entries.any?
         total_hours = entries.map { |x| x.hours }.sum.round(2)
 
@@ -61,13 +63,13 @@ module HarvestSlackReport
         end
 
         report << { fallback: "#{name} logged #{total_hours} hours",
-                    text: "#{name} logged #{total_hours} hours",
+                    text: "<#{harvest_url}|#{name}> logged #{total_hours} hours",
                     fields: hours_by_project,
                     color: color_code
                   }
 
       else
-        report << { fallback: "#{name} logged no time", text: "#{name} logged no time", color: "#4A4A4A" }
+        report << { fallback: "#{name} logged no time", text: "<#{harvest_url}|#{name}> logged no time", color: "#4A4A4A" }
       end
       puts "#{i+1}/#{n_people}"
     end
