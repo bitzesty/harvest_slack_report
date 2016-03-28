@@ -17,6 +17,10 @@ The following environment variables must be set:
 
     $ harvest_slack_report
 
+    [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+    Set Heroku scheduler with this command: `./exe/harvest_slack_report`
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/bitzesty/harvest_slack_report. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
