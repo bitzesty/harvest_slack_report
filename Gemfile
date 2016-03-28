@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Specify your gem's dependencies in harvest_slack_report.gemspec
-# gemspec
+gemspec
 
 gem "slack-ruby-client", "~> 0.7.0"
 gem "harvested", "~> 3.1.1"
