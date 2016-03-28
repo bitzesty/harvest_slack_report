@@ -75,14 +75,19 @@ module HarvestSlackReport
           ":military_medal:"
         end
 
-        report << { fallback: "#{name} logged #{total_hours} hours",
-                    text: "<#{harvest_url}|#{name}> logged #{total_hours} hours #{emoji}",
+        report << { fallback: "#{name} logged #{total_hours} hours: #{harvest_url}",
+                    author_name: name,
+                    author_link: harvest_url,
+                    text: "Logged #{total_hours} hours #{emoji}",
                     fields: hours_by_project,
                     color: color_code
                   }
 
       else
-        report << { fallback: "#{name} logged no time", text: "<#{harvest_url}|#{name}> logged no time :notsureif:" }
+        report << { fallback: "#{name} logged no time",
+                    author_name: name,
+                    author_link: harvest_url,
+                    text: ":notsureif: Logged no time" }
       end
       puts "#{i+1}/#{n_people}"
     end
