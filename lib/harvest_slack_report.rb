@@ -1,4 +1,4 @@
-require './harvest_slack_report/version'
+require_relative 'harvest_slack_report/version'
 require 'harvested'
 require 'slack-ruby-client'
 require 'active_support/all'
