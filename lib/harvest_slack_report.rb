@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require_relative 'harvest_slack_report/version'
 require 'harvested'
 require 'slack-ruby-client'
