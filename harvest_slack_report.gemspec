@@ -22,7 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "slack-ruby-client", "~> 0.7.0"
   spec.add_dependency "harvested", "~> 3.1.1"
   spec.add_dependency "activesupport", "~> 4.2.6"
-  spec.add_dependency "dotenv", "~> 2.1.0"
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"

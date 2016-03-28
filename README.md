@@ -19,7 +19,7 @@ The following environment variables must be set:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-Set Heroku scheduler with this command: `./exe/harvest_slack_report`
+Set Heroku scheduler with this command: `bundle exec ./exe/harvest_slack_report`
 
 ## Contributing
 
