@@ -82,7 +82,7 @@ module HarvestSlackReport
                   }
 
       else
-        report << { fallback: "#{name} logged no time", text: "<#{harvest_url}|#{name}> logged no time :notsureif:", color: "#4A4A4A" }
+        report << { fallback: "#{name} logged no time", text: "<#{harvest_url}|#{name}> logged no time :notsureif:" }
       end
       puts "#{i+1}/#{n_people}"
     end
