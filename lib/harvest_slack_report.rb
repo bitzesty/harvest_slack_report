@@ -47,7 +47,7 @@ module HarvestSlackReport
 
         hours_by_project = entries.group_by { |x| x.project_id }.map do |project_id, es|
           proj = projects.find { |pr| pr.id == project_id }
-          title = "#{proj.code.present? ? "[#{proj.code}] " : ''}#{proj.name}"
+          title = proj.code.present? ? proj.code : proj.name
           { title:  title, value: es.map { |h| h.hours }.sum.round(2), short: true }
         end
 
