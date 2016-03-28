@@ -2,8 +2,6 @@
 
 Reporting on daily harvest activity.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
 ## Installation
 
     $ gem install harvest_slack_report
@@ -16,6 +14,8 @@ The following environment variables must be set:
     HARVEST_USERNAME=your email
     HARVEST_PASSWORD=password
     SLACK_API_TOKEN=slack bot token
+
+    $ harvest_slack_report
 
 ## Contributing
 

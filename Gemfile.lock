@@ -3,6 +3,7 @@ PATH
   specs:
     harvest_slack_report (1.0.0)
       activesupport (~> 4.2.6)
+      dotenv (~> 2.1.0)
       harvested (~> 3.1.1)
       slack-ruby-client (~> 0.7.0)
 
@@ -69,7 +70,6 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.11)
-  dotenv (~> 2.1.0)
   harvest_slack_report!
   rake (~> 10.0)
   rspec (~> 3.0)
