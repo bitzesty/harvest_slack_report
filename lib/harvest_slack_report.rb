@@ -96,6 +96,13 @@ module HarvestSlackReport
   end
 
   def self.run
+    today = Date.today
+
+    if today.monday? || today.sunday?
+      puts 'No need to report over the weekend'
+      return
+    end
+
     from_date = Time.now - 24.hours
     report = fetch_harvest_data(from_date)
 
