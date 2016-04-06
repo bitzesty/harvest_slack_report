@@ -54,7 +54,17 @@ module HarvestSlackReport
 
         hours_by_project = entries.group_by { |x| x.project_id }.map do |project_id, es|
           proj = projects.find { |pr| pr.id == project_id }
-          title = proj.code.present? ? proj.code : proj.name
+
+          if proj.code.present?
+            title = proj.code
+            # If there is a code, then this should be in the timesheet notes
+            if es.select{ |e| e['notes'] !~ /#{Regexp.escape title}/}.any?
+              title = "#{title} *check timesheet titles*"
+            end
+          else
+            title = proj.name
+          end
+
           { title:  title, value: es.map { |h| h.hours }.sum.round(2), short: true }
         end
 
