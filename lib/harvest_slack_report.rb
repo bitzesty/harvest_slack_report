@@ -2,8 +2,11 @@
 
 require_relative 'harvest_slack_report/version'
 require 'harvested'
+require 'httparty'
 require 'slack-ruby-client'
 require 'active_support/all'
+
+USER_AGENT="I want a public API (matt@bitzesty.com): domain #{ENV['HARVEST_DOMAIN']}".freeze
 
 # Posts summary harvest data to a slack channel
 module HarvestSlackReport
@@ -30,6 +33,8 @@ module HarvestSlackReport
     projects = harvest.projects.all
 
     # puts projects
+
+    time_off_ids = people_with_scheduled_time_off(from_date)
 
     puts 'Aggregating data...'
 
@@ -75,15 +80,28 @@ module HarvestSlackReport
           ":military_medal:"
         end
 
-        report << { fallback: "#{name} logged #{total_hours} hours: #{harvest_url}",
+        if time_off_ids.include?(person.id)
+          report << { fallback: "#{name} had scheduled time off, but logged #{total_hours} hours: #{harvest_url}",
+                      author_name: name,
+                      author_link: harvest_url,
+                      text: "Logged #{total_hours} hours but, had scheduled time off :palm_tree: :wat:" }
+        else
+          report << { fallback: "#{name} logged #{total_hours} hours: #{harvest_url}",
+                      author_name: name,
+                      author_link: harvest_url,
+                      text: "Logged #{total_hours} hours #{emoji}",
+                      fields: hours_by_project,
+                      color: color_code
+                    }
+        end
+      elsif time_off_ids.include?(person.id)
+        report << { fallback: "#{name} had scheduled time off",
                     author_name: name,
                     author_link: harvest_url,
-                    text: "Logged #{total_hours} hours #{emoji}",
-                    fields: hours_by_project,
-                    color: color_code
-                  }
+                    text: "had scheduled time off :palm_tree:" }
 
       else
+
         report << { fallback: "#{name} logged no time",
                     author_name: name,
                     author_link: harvest_url,
@@ -93,6 +111,46 @@ module HarvestSlackReport
     end
 
     report
+  end
+
+  def self.people_with_scheduled_time_off(from_date=Date.today)
+    if ENV['FORECAST_TOKEN'] #Bearer Token
+      date = from_date.to_date.to_formatted_s(:db)
+      assignments = HTTParty.get(
+        "https://api.forecastapp.com/assignments?end_date=#{date}&start_date=#{date}&state=active",
+        headers: {
+          "User-Agent" => USER_AGENT,
+          "authorization" => ENV['FORECAST_TOKEN'],
+          "forecast-account-id" => ENV['FORECAST_ACCOUNT_ID']
+        }
+      )
+      projects = HTTParty.get(
+        "https://api.forecastapp.com/projects",
+        headers: {
+          "User-Agent" => USER_AGENT,
+          "authorization" => ENV['FORECAST_TOKEN'],
+          "forecast-account-id" => ENV['FORECAST_ACCOUNT_ID']
+        }
+      )
+
+      people = HTTParty.get(
+        "https://api.forecastapp.com/people",
+        headers: {
+          "User-Agent" => USER_AGENT,
+          "authorization" => ENV['FORECAST_TOKEN'],
+          "forecast-account-id" => ENV['FORECAST_ACCOUNT_ID']
+        }
+      )
+
+      time_off_id = projects['projects'].select{|pr| pr['name'] == 'Time Off'}[0]['id']
+
+      people_ids = assignments['assignments'].select{|ass| ass['project_id'] == time_off_id }.map{ |a| a['person_id'] }
+
+      people_with_time_off = people['people'].select{|person| people_ids.include?(person['id']) }
+      people_with_time_off_ids = people_with_time_off.map{|person| person['harvest_user_id']}
+    else
+      []
+    end
   end
 
   def self.run
