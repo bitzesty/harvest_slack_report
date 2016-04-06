@@ -15,7 +15,10 @@ The following environment variables must be set:
     HARVEST_PASSWORD=password
     SLACK_API_TOKEN=slack bot token
 
-    $ harvest_slack_report
+Optional:
+
+  FORECAST_TOKEN= Bearer Token
+  FORECAST_ACCOUNT_ID=forecast account id
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
