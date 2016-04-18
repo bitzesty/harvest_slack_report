@@ -152,7 +152,7 @@ module HarvestSlackReport
         }
       )
 
-      time_off_id = projects['projects'].select{|pr| pr['name'] == 'Time Off'}[0]['id']
+      time_off_id = projects['projects'].select{|pr| pr['name'] == 'Time Off'}[0]['id'] if projects['projects']
 
       people_ids = assignments['assignments'].select{|ass| ass['project_id'] == time_off_id }.map{ |a| a['person_id'] }
 
