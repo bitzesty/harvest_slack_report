@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+require 'dotenv'
+Dotenv.load
 
 require_relative '../lib/harvest_slack_report'
 

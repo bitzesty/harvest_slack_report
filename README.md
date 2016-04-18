@@ -18,7 +18,7 @@ The following environment variables must be set:
 
 Optional:
 
-  FORECAST_TOKEN= Bearer Token
+  FORECAST_TOKEN= Bearer Token #looks like this is valid only for 6 days
   FORECAST_ACCOUNT_ID=forecast account id
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
