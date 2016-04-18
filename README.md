@@ -4,7 +4,7 @@ Reporting on daily harvest activity.
 
 ## Installation
 
-    $ bundle install
+    $ ./bin/setup
 
 ## Usage
 
