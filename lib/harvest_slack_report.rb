@@ -181,9 +181,9 @@ class HarvestSlackReport
   def self.run
     today = Date.today
 
-    if (today.monday? || today.sunday?) && !ENV['FORCE'] == 'true'
+    if (today.monday? || today.sunday?)
       puts 'No need to report over the weekend'
-      return
+      return unless !!ENV['FORCE']
     end
 
     from_date = Time.now - 24.hours
