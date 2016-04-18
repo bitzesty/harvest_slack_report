@@ -3,6 +3,7 @@ require 'harvested'
 require 'httparty'
 require 'slack-ruby-client'
 require 'active_support/all'
+require 'raven/base'
 
 USER_AGENT="I want a public API (matt@bitzesty.com): domain #{ENV['HARVEST_DOMAIN']}".freeze
 
@@ -122,6 +123,7 @@ class HarvestSlackReport
   end
 
   def self.people_with_scheduled_time_off(from_date=Date.today)
+    puts 'fetching people with time off'
     if ENV['FORECAST_TOKEN'] #Bearer Token
       date = from_date.to_date.to_formatted_s(:db)
       assignments = HTTParty.get(
@@ -132,6 +134,10 @@ class HarvestSlackReport
           "forecast-account-id" => ENV['FORECAST_ACCOUNT_ID']
         }
       )
+
+      puts "assignments"
+      puts assignments
+
       projects = HTTParty.get(
         "https://api.forecastapp.com/projects",
         headers: {
@@ -140,6 +146,9 @@ class HarvestSlackReport
           "forecast-account-id" => ENV['FORECAST_ACCOUNT_ID']
         }
       )
+
+      puts "projects"
+      puts projects
 
       people = HTTParty.get(
         "https://api.forecastapp.com/people",
@@ -150,7 +159,15 @@ class HarvestSlackReport
         }
       )
 
-      time_off_id = projects['projects'].select{|pr| pr['name'] == 'Time Off'}[0]['id'] if projects['projects']
+      puts 'people'
+      puts people
+
+      if assignments['reason'] == 'expired-token'
+        Raven.capture_exception('Forecase token expired')
+        return []
+      end
+
+      time_off_id = projects['projects'].select{|pr| pr['name'] == 'Time Off'}[0]['id']
 
       people_ids = assignments['assignments'].select{|ass| ass['project_id'] == time_off_id }.map{ |a| a['person_id'] }
 
