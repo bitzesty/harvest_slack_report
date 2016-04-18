@@ -5,6 +5,7 @@ Reporting on daily harvest activity.
 ## Installation
 
     $ ./bin/setup
+    $ bundle exec foreman start
 
 ## Usage
 
