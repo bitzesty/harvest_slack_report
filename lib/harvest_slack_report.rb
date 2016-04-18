@@ -1,6 +1,4 @@
 # encoding: utf-8
-
-require_relative 'harvest_slack_report/version'
 require 'harvested'
 require 'httparty'
 require 'slack-ruby-client'
@@ -9,7 +7,7 @@ require 'active_support/all'
 USER_AGENT="I want a public API (matt@bitzesty.com): domain #{ENV['HARVEST_DOMAIN']}".freeze
 
 # Posts summary harvest data to a slack channel
-module HarvestSlackReport
+class HarvestSlackReport
   def self.fetch_harvest_data(from_date)
     domain = ENV.fetch 'HARVEST_DOMAIN'
     username = ENV.fetch 'HARVEST_USERNAME'

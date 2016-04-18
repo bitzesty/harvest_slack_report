@@ -4,7 +4,7 @@ Reporting on daily harvest activity.
 
 ## Installation
 
-    $ gem install harvest_slack_report
+    $ bundle install
 
 ## Usage
 
