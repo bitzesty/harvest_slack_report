@@ -72,7 +72,7 @@ class HarvestSlackReport
           "#D0021B"
         when 2..4
           "#F59423"
-        when 4..5
+        when 4..6
           "#F8C61C"
         else
           "#72D321"
