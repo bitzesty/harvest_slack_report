@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
-
+require 'dotenv'
+Dotenv.load
 require "bundler/setup"
-require "harvest_slack_report"
+require_relative "../lib/harvest_slack_report"
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.

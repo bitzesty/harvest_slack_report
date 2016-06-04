@@ -5,7 +5,7 @@ require 'slack-ruby-client'
 require 'active_support/all'
 require 'raven/base'
 
-USER_AGENT="I want a public API (matt@bitzesty.com): domain #{ENV['HARVEST_DOMAIN']}".freeze
+USER_AGENT = "I want a public API: domain #{ENV['HARVEST_DOMAIN']}".freeze
 
 # Posts summary harvest data to a slack channel
 class HarvestSlackReport
@@ -49,45 +49,45 @@ class HarvestSlackReport
       harvest_url = "https://#{domain}.harvestapp.com/time/day/#{from_date.strftime("%Y/%m/%d")}/#{person.id}"
 
       if entries && entries.any?
-        total_hours = entries.map { |x| x.hours }.sum.round(2)
+        total_hours = entries.map(&:hours).sum.round(2)
 
-        hours_by_project = entries.group_by { |x| x.project_id }.map do |project_id, es|
+        hours_by_project = entries.group_by(&:project_id).map do |project_id, es|
           proj = projects.find { |pr| pr.id == project_id }
 
           if proj.code.present?
             title = proj.code
             # If there is a code, then this should be in the timesheet notes
-            if es.select{ |e| e['notes'] !~ /#{Regexp.escape title}/}.any?
+            if es.select { |e| e['notes'] !~ /#{Regexp.escape title}/ }.any?
               title = "#{title} *check timesheet titles*"
             end
           else
             title = proj.name
           end
 
-          { title:  title, value: es.map { |h| h.hours }.sum.round(2), short: true }
+          { title:  title, value: es.map(&:hours).sum.round(2), short: true }
         end
 
-        color_code = case total_hours
-        when 0..2
-          "#D0021B"
-        when 2..4
-          "#F59423"
-        when 4..6
-          "#F8C61C"
-        else
-          "#72D321"
-        end
+        color_code =  case total_hours
+                      when 0..2
+                        '#D0021B'
+                      when 2..4
+                        '#F59423'
+                      when 4..6
+                        '#F8C61C'
+                      else
+                        '#72D321'
+                      end
 
         emoji = case total_hours
-        when 0..6
-          ""
-        when 6..7
-          ":simple_smile:"
-        when 7..8
-          ":+1:"
-        else
-          ":military_medal:"
-        end
+                when 0..6
+                  ''
+                when 6..7
+                  ':simple_smile:'
+                when 7..8
+                  ':+1:'
+                else
+                  ':military_medal:'
+                end
 
         if time_off_ids.include?(person.id)
           report << { fallback: "#{name} had scheduled time off, but logged #{total_hours} hours: #{harvest_url}",
@@ -107,14 +107,14 @@ class HarvestSlackReport
         report << { fallback: "#{name} had scheduled time off",
                     author_name: name,
                     author_link: harvest_url,
-                    text: "had scheduled time off :palm_tree:" }
+                    text: 'had scheduled time off :palm_tree:' }
 
       else
 
         report << { fallback: "#{name} logged no time",
                     author_name: name,
                     author_link: harvest_url,
-                    text: ":notsureif: Logged no time" }
+                    text: ':notsureif: Logged no time' }
       end
       puts "#{i+1}/#{n_people}"
     end
@@ -124,7 +124,7 @@ class HarvestSlackReport
 
   def self.people_with_scheduled_time_off(from_date=Date.today)
     puts 'fetching people with time off'
-    if ENV['FORECAST_TOKEN'] #Bearer Token
+    if ENV['FORECAST_TOKEN'] # Bearer Token
       date = from_date.to_date.to_formatted_s(:db)
       assignments = HTTParty.get(
         "https://api.forecastapp.com/assignments?end_date=#{date}&start_date=#{date}&state=active",
@@ -135,27 +135,27 @@ class HarvestSlackReport
         }
       )
 
-      puts "assignments"
+      puts 'assignments'
       puts assignments
 
       projects = HTTParty.get(
         "https://api.forecastapp.com/projects",
         headers: {
-          "User-Agent" => USER_AGENT,
-          "authorization" => ENV['FORECAST_TOKEN'],
-          "forecast-account-id" => ENV['FORECAST_ACCOUNT_ID']
+          'User-Agent' => USER_AGENT,
+          'authorization' => ENV['FORECAST_TOKEN'],
+          'forecast-account-id' => ENV['FORECAST_ACCOUNT_ID']
         }
       )
 
-      puts "projects"
+      puts 'projects'
       puts projects
 
       people = HTTParty.get(
         "https://api.forecastapp.com/people",
         headers: {
-          "User-Agent" => USER_AGENT,
-          "authorization" => ENV['FORECAST_TOKEN'],
-          "forecast-account-id" => ENV['FORECAST_ACCOUNT_ID']
+          'User-Agent' => USER_AGENT,
+          'authorization' => ENV['FORECAST_TOKEN'],
+          'forecast-account-id' => ENV['FORECAST_ACCOUNT_ID']
         }
       )
 
@@ -165,14 +165,15 @@ class HarvestSlackReport
       if assignments['reason'] == 'expired-token'
         Raven.capture_exception('Forecase token expired')
         return []
+      elsif  assignments['reason'] == 'non-existent-token'
+        Raven.capture_exception('Forecase token not set')
+        return []
       end
 
-      time_off_id = projects['projects'].select{|pr| pr['name'] == 'Time Off'}[0]['id']
-
-      people_ids = assignments['assignments'].select{|ass| ass['project_id'] == time_off_id }.map{ |a| a['person_id'] }
-
-      people_with_time_off = people['people'].select{|person| people_ids.include?(person['id']) }
-      people_with_time_off_ids = people_with_time_off.map{|person| person['harvest_user_id']}
+      time_off_id = projects['projects'].select { |pr| pr['name'] == 'Time Off' }[0]['id']
+      people_ids = assignments['assignments'].select { |ass| ass['project_id'] == time_off_id }.map{ |a| a['person_id'] }
+      people_with_time_off = people['people'].select { |person| people_ids.include?(person['id']) }
+      people_with_time_off.map{ |person| person['harvest_user_id'] }
     else
       []
     end
@@ -181,7 +182,7 @@ class HarvestSlackReport
   def self.run
     today = Date.today
 
-    if (today.monday? || today.sunday?)
+    if today.monday? || today.sunday?
       puts 'No need to report over the weekend'
       return unless !!ENV['FORCE']
     end
