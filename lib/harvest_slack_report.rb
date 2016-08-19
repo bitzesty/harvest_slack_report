@@ -25,6 +25,8 @@ class HarvestSlackReport
       []
     end
 
+    no_warn_users = [980033, 984890] #(matt & laura)
+
     people = harvest.users.all.select { |u| u.is_active? && !ignore_users.include?(u.id) }
 
     # puts people.map{ |u| u.email }
@@ -110,11 +112,10 @@ class HarvestSlackReport
                     text: 'had scheduled time off :palm_tree:' }
 
       else
-
         report << { fallback: "#{name} logged no time",
                     author_name: name,
                     author_link: harvest_url,
-                    text: ':notsureif: Logged no time' }
+                    text: ':notsureif: Logged no time' } unless no_warn_users.include?(person.id)
       end
       puts "#{i+1}/#{n_people}"
     end
