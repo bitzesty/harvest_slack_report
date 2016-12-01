@@ -25,7 +25,7 @@ class HarvestSlackReport
       []
     end
 
-    no_warn_users = [980033, 984890] #(matt & laura)
+    no_warn_users = [980033, 984890, 1304713, 1217385] #(matt, laura, tom, nadia)
 
     people = harvest.users.all.select { |u| u.is_active? && !ignore_users.include?(u.id) }
 
