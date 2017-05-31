@@ -70,11 +70,11 @@ class HarvestSlackReport
         end
 
         color_code =  case total_hours
-                      when 0..2
+                      when 0..3
                         '#D0021B'
-                      when 2..4
+                      when 3..5
                         '#F59423'
-                      when 4..6
+                      when 5..7
                         '#F8C61C'
                       else
                         '#72D321'
@@ -83,9 +83,9 @@ class HarvestSlackReport
         emoji = case total_hours
                 when 0..6
                   ''
-                when 6..7
+                when 7..7.5
                   ':simple_smile:'
-                when 7..8
+                when 7.5..8
                   ':+1:'
                 else
                   ':military_medal:'
