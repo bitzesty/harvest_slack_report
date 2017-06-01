@@ -81,7 +81,7 @@ class HarvestSlackReport
                       end
 
         emoji = case total_hours
-                when 0..6
+                when 0..7
                   ''
                 when 7..7.5
                   ':simple_smile:'
