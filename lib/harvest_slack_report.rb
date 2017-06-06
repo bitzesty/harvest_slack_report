@@ -76,8 +76,10 @@ class HarvestSlackReport
                         '#F59423'
                       when 5..7
                         '#F8C61C'
-                      else
+                      when 7..9
                         '#72D321'
+                      else
+                        '#D0021B'
                       end
 
         emoji = case total_hours
@@ -87,8 +89,10 @@ class HarvestSlackReport
                   ':simple_smile:'
                 when 7.5..8
                   ':+1:'
-                else
+                when 8..9
                   ':military_medal:'
+                else
+                  ''
                 end
 
         if time_off_ids.include?(person.id)
